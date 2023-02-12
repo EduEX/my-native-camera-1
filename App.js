@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { Camera } from 'expo-camera';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Modal, Image } from 'react-native';
 import {FontAwesome} from '@expo/vector-icons'
 
 export default function App() {
@@ -8,6 +8,7 @@ export default function App() {
   const [type, setType] = useState(Camera.Constants.Type.back) //CameraType.back
   const [hasPermission, setHasPermission] = useState(null)
   const [capturedPhoto, setCapturedPhoto] = useState(null)
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     (async () => {
@@ -29,6 +30,7 @@ export default function App() {
       const data = await camRef.current.takePictureAsync()
       setCapturedPhoto(data.uri)
       console.log(data)
+      setOpen(true)
     }
  }
 
@@ -49,7 +51,16 @@ export default function App() {
             <FontAwesome name="camera" size={30} color="white"/>
           </TouchableOpacity>
         </View>        
-      </Camera>  
+      </Camera>
+      {capturedPhoto &&
+      <Modal animationType="slide" transparent={true} visible={open}>
+        <View style={styles.contentModal}>
+          <TouchableOpacity style={styles.btClose} onPress={() => {setOpen(false)}}>
+            <FontAwesome name="close" size={50} color="red"/>
+          </TouchableOpacity>
+          <Image style={styles.image} source={{uri: capturedPhoto}}/>
+        </View>
+      </Modal>}
     </SafeAreaView>
   );
 }
@@ -86,4 +97,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: 'center',
   },
+  contentModal:{
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 20
+  },
+  btClose:{
+    position: "absolute",
+    top: "2%",
+    left: "4%",
+    margin: 5
+  },
+  image:{
+    width: "80%",
+    height: "70%"
+  }
 });
