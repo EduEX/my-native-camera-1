@@ -28,12 +28,13 @@ export default function App() {
     if(camRef){
       const data = await camRef.current.takePictureAsync()
       setCapturedPhoto(data.uri)
+      console.log(data)
     }
  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Camera type={type} style={styles.camera}> 
+      <Camera type={type} style={styles.camera} ref={camRef}> 
         <View style={styles.viewBtFlip}>  
             <TouchableOpacity onPress={() => {
                 setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back)
@@ -44,10 +45,7 @@ export default function App() {
             
         </View>
         <View style={styles.viewBtCamera}>
-          <TouchableOpacity onPress={() =>{
-
-            }}
-          >
+          <TouchableOpacity onPress={takePicture}>
             <FontAwesome name="camera" size={30} color="white"/>
           </TouchableOpacity>
         </View>        
