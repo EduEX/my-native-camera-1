@@ -42,8 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: 'center',
-    backgroundColor: "orange"
+    justifyContent: 'center'
   },
   camera:{
     width: "100%",
